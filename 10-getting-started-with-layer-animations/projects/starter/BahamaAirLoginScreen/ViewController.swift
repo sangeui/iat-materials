@@ -24,259 +24,260 @@ import UIKit
 
 // A delay function
 func delay(seconds: Double, completion: @escaping ()-> Void) {
-  DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: completion)
+    DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: completion)
 }
 
 class ViewController: UIViewController {
-
-  // MARK: IB outlets
-
-  @IBOutlet var loginButton: UIButton!
-  @IBOutlet var heading: UILabel!
-  @IBOutlet var username: UITextField!
-  @IBOutlet var password: UITextField!
-
-  @IBOutlet var cloud1: UIImageView!
-  @IBOutlet var cloud2: UIImageView!
-  @IBOutlet var cloud3: UIImageView!
-  @IBOutlet var cloud4: UIImageView!
-
-  // MARK: further UI
-
-  let spinner = UIActivityIndicatorView(style: .whiteLarge)
-  let status = UIImageView(image: UIImage(named: "banner"))
-  let label = UILabel()
-  let messages = ["Connecting ...", "Authorizing ...", "Sending credentials ...", "Failed"]
-
-  var statusPosition = CGPoint.zero
-
-  // MARK: view controller methods
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
     
-    // 로그인 버튼 유저 인터페이스 설정
-    loginButton.layer.cornerRadius = 8.0
-    loginButton.layer.masksToBounds = true
-
-    // 스피너 유저 인터페이스 설정: 로그인 버튼의 하위 뷰가 된다
-    spinner.frame = CGRect(x: -20.0, y: 6.0, width: 20.0, height: 20.0)
-    spinner.startAnimating()
-    spinner.alpha = 0.0
-    loginButton.addSubview(spinner)
-
-    // 배너 유저 인터페이스 설정: 로그인 버튼과 동일한 중앙 위치
-    status.isHidden = true
-    status.center = loginButton.center
-    view.addSubview(status)
-
-    // 배너에 사용될 레이블 유저 인터페이스 설정
-    label.frame = CGRect(x: 0.0, y: 0.0, width: status.frame.size.width, height: status.frame.size.height)
-    label.font = UIFont(name: "HelveticaNeue", size: 18.0)
-    label.textColor = UIColor(red: 0.89, green: 0.38, blue: 0.0, alpha: 1.0)
-    label.textAlignment = .center
-    status.addSubview(label)
-
-    // 최초의 배너 중앙 위치를 statusPosition에 할당한다
-    statusPosition = status.center
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    // 타이틀 레이블과 텍스트 필드 기본 위치 설정: 뷰의 넓이 만큼 위치 조정
-    heading.center.x  -= view.bounds.width
-    username.center.x -= view.bounds.width
-    password.center.x -= view.bounds.width
-
-    // 구름 이미지를 처음에는 보이지 않도록 alpha 설정
-    cloud1.alpha = 0.0
-    cloud2.alpha = 0.0
-    cloud3.alpha = 0.0
-    cloud4.alpha = 0.0
-
-    // 로그인 버튼의 y축 위치를 아래로 설정하고 보이지 않도록 alpha 설정
-    loginButton.center.y += 30.0
-    loginButton.alpha = 0.0
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-
-    // 타이틀 레이블의 위치를 다시 제자리로 애니메이트
-    UIView.animate(withDuration: 0.5) {
-      self.heading.center.x += self.view.bounds.width
+    // MARK: IB outlets
+    
+    
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var userNameField: UITextField!
+    @IBOutlet var passwordField: UITextField!
+    @IBOutlet var loginButton: UIButton!
+    
+    @IBOutlet var cloud1: UIImageView!
+    @IBOutlet var cloud2: UIImageView!
+    @IBOutlet var cloud3: UIImageView!
+    @IBOutlet var cloud4: UIImageView!
+    
+    // MARK: further UI
+    
+    let spinner = UIActivityIndicatorView(style: .whiteLarge)
+    let status = UIImageView(image: UIImage(named: "banner"))
+    let label = UILabel()
+    let messages = ["Connecting ...", "Authorizing ...", "Sending credentials ...", "Failed"]
+    
+    var statusPosition = CGPoint.zero
+    
+    // MARK: view controller methods
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // 로그인 버튼 유저 인터페이스 설정
+        loginButton.layer.cornerRadius = 8.0
+        loginButton.layer.masksToBounds = true
+        
+        // 스피너 유저 인터페이스 설정: 로그인 버튼의 하위 뷰가 된다
+        spinner.frame = CGRect(x: -20.0, y: 6.0, width: 20.0, height: 20.0)
+        spinner.startAnimating()
+        spinner.alpha = 0.0
+        loginButton.addSubview(spinner)
+        
+        // 배너 유저 인터페이스 설정: 로그인 버튼과 동일한 중앙 위치
+        status.isHidden = true
+        status.center = loginButton.center
+        view.addSubview(status)
+        
+        // 배너에 사용될 레이블 유저 인터페이스 설정
+        label.frame = CGRect(x: 0.0, y: 0.0, width: status.frame.size.width, height: status.frame.size.height)
+        label.font = UIFont(name: "HelveticaNeue", size: 18.0)
+        label.textColor = UIColor(red: 0.89, green: 0.38, blue: 0.0, alpha: 1.0)
+        label.textAlignment = .center
+        status.addSubview(label)
+        
+        // 최초의 배너 중앙 위치를 statusPosition에 할당한다
+        statusPosition = status.center
     }
-
-    // 유저 네임 텍스트 필드를 약간의 딜레이 후 제자리로 애니메이트
-    UIView.animate(withDuration: 0.5, delay: 0.3, usingSpringWithDamping: 0.6,
-      initialSpringVelocity: 0.0,
-      animations: {
-        self.username.center.x += self.view.bounds.width
-      },
-      completion: nil
-    )
-
-    // 패스워드 텍스트 필드를 약간의 딜레이 후 제자리로 애니메이트
-    UIView.animate(withDuration: 0.5, delay: 0.4, usingSpringWithDamping: 0.6,
-      initialSpringVelocity: 0.0,
-      animations: {
-        self.password.center.x += self.view.bounds.width
-      },
-      completion: nil
-    )
-
-    // 모든 구름 이미지를 각각의 딜레이 이후 화면에 보이도록 애니메이트
-    UIView.animate(withDuration: 0.5, delay: 0.5,
-      animations: {
-        self.cloud1.alpha = 1.0
-      },
-      completion: nil
-    )
-
-    UIView.animate(withDuration: 0.5, delay: 0.7,
-      animations: {
-        self.cloud2.alpha = 1.0
-      },
-      completion: nil
-    )
-
-    UIView.animate(withDuration: 0.5, delay: 0.9,
-      animations: {
-        self.cloud3.alpha = 1.0
-      },
-      completion: nil
-    )
-
-    UIView.animate(withDuration: 0.5, delay: 1.1,
-      animations: {
-        self.cloud4.alpha = 1.0
-      },
-      completion: nil
-    )
-
-    // 로그인 버튼을 딜레이 후 다시 제자리로 돌려 놓으면서 화면에 보이도록 애니메이트
-    UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 0.5,
-      initialSpringVelocity: 0.0,
-      animations: {
-        self.loginButton.center.y -= 30.0
-        self.loginButton.alpha = 1.0
-      },
-      completion: nil
-    )
-
-    // 구름 이미지들이 계속해서 애니메이트 하도록 메소드 호출
-    animateCloud(cloud1)
-    animateCloud(cloud2)
-    animateCloud(cloud3)
-    animateCloud(cloud4)
-  }
-
-  func showMessage(index: Int) {
-    label.text = messages[index]
-
-    UIView.transition(with: status, duration: 0.33,
-      options: [.curveEaseOut, .transitionFlipFromBottom],
-      animations: {
-        self.status.isHidden = false
-      },
-      completion: {_ in
-        //transition completion
-        delay(seconds: 2.0) {
-          if index < self.messages.count-1 {
-            self.removeMessage(index: index)
-          } else {
-            //reset form
-            self.resetForm()
-          }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // 타이틀 레이블과 텍스트 필드 기본 위치 설정: 뷰의 넓이 만큼 위치 조정
+        titleLabel.center.x  -= view.bounds.width
+        userNameField.center.x -= view.bounds.width
+        passwordField.center.x -= view.bounds.width
+        
+        // 구름 이미지를 처음에는 보이지 않도록 alpha 설정
+        cloud1.alpha = 0.0
+        cloud2.alpha = 0.0
+        cloud3.alpha = 0.0
+        cloud4.alpha = 0.0
+        
+        // 로그인 버튼의 y축 위치를 아래로 설정하고 보이지 않도록 alpha 설정
+        loginButton.center.y += 30.0
+        loginButton.alpha = 0.0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // 타이틀 레이블의 위치를 다시 제자리로 애니메이트
+        UIView.animate(withDuration: 0.5) {
+            self.titleLabel.center.x += self.view.bounds.width
         }
-      }
-    )
-  }
-
-  func removeMessage(index: Int) {
-
-    UIView.animate(withDuration: 0.33, delay: 0.0,
-      animations: {
-        self.status.center.x += self.view.frame.size.width
-      },
-      completion: {_ in
-        self.status.isHidden = true
-        self.status.center = self.statusPosition
-
-        self.showMessage(index: index+1)
-      }
-    )
-  }
-
-  func resetForm() {
-    UIView.transition(with: status, duration: 0.2, options: .transitionFlipFromTop,
-      animations: {
-        self.status.isHidden = true
-        self.status.center = self.statusPosition
-      },
-      completion: nil
-    )
-
-    UIView.animate(withDuration: 0.2, delay: 0.0,
-      animations: {
-        self.spinner.center = CGPoint(x: -20.0, y: 16.0)
-        self.spinner.alpha = 0.0
-        self.loginButton.backgroundColor = UIColor(red: 0.63, green: 0.84, blue: 0.35, alpha: 1.0)
-        self.loginButton.bounds.size.width -= 80.0
-        self.loginButton.center.y -= 60.0
-      },
-      completion: nil
-    )
-  }
-
-  // MARK: further methods
-
-  @IBAction func login() {
-    view.endEditing(true)
-
-    UIView.animate(withDuration: 1.5, delay: 0.0, usingSpringWithDamping: 0.2,
-      initialSpringVelocity: 0.0,
-      animations: {
-        self.loginButton.bounds.size.width += 80.0
-      },
-      completion: {_ in
-        self.showMessage(index: 0)
-      }
-    )
-
-    UIView.animate(withDuration: 0.33, delay: 0.0, usingSpringWithDamping: 0.7,
-      initialSpringVelocity: 0.0,
-      animations: {
-        self.loginButton.center.y += 60.0
-        self.loginButton.backgroundColor = UIColor(red: 0.85, green: 0.83, blue: 0.45, alpha: 1.0)
-        self.spinner.center = CGPoint(x: 40.0, y: self.loginButton.frame.size.height/2)
-        self.spinner.alpha = 1.0
-      },
-      completion: nil
-    )
-  }
-
-  func animateCloud(_ cloud: UIImageView) {
-    let cloudSpeed = 60.0 / view.frame.size.width
-    let duration = (view.frame.size.width - cloud.frame.origin.x) * cloudSpeed
-    UIView.animate(withDuration: TimeInterval(duration), delay: 0.0, options: .curveLinear,
-      animations: {
-        cloud.frame.origin.x = self.view.frame.size.width
-      },
-      completion: {_ in
-        cloud.frame.origin.x = -cloud.frame.size.width
-        self.animateCloud(cloud)
-      }
-    )
-  }
-
-  // MARK: UITextFieldDelegate
-
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    let nextField = (textField === username) ? password : username
-    nextField?.becomeFirstResponder()
-    return true
-  }
-
+        
+        // 유저 네임 텍스트 필드를 약간의 딜레이 후 제자리로 애니메이트
+        UIView.animate(withDuration: 0.5, delay: 0.3, usingSpringWithDamping: 0.6,
+                       initialSpringVelocity: 0.0,
+                       animations: {
+                        self.userNameField.center.x += self.view.bounds.width
+                       },
+                       completion: nil
+        )
+        
+        // 패스워드 텍스트 필드를 약간의 딜레이 후 제자리로 애니메이트
+        UIView.animate(withDuration: 0.5, delay: 0.4, usingSpringWithDamping: 0.6,
+                       initialSpringVelocity: 0.0,
+                       animations: {
+                        self.passwordField.center.x += self.view.bounds.width
+                       },
+                       completion: nil
+        )
+        
+        // 모든 구름 이미지를 각각의 딜레이 이후 화면에 보이도록 애니메이트
+        UIView.animate(withDuration: 0.5, delay: 0.5,
+                       animations: {
+                        self.cloud1.alpha = 1.0
+                       },
+                       completion: nil
+        )
+        
+        UIView.animate(withDuration: 0.5, delay: 0.7,
+                       animations: {
+                        self.cloud2.alpha = 1.0
+                       },
+                       completion: nil
+        )
+        
+        UIView.animate(withDuration: 0.5, delay: 0.9,
+                       animations: {
+                        self.cloud3.alpha = 1.0
+                       },
+                       completion: nil
+        )
+        
+        UIView.animate(withDuration: 0.5, delay: 1.1,
+                       animations: {
+                        self.cloud4.alpha = 1.0
+                       },
+                       completion: nil
+        )
+        
+        // 로그인 버튼을 딜레이 후 다시 제자리로 돌려 놓으면서 화면에 보이도록 애니메이트
+        UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0.0,
+                       animations: {
+                        self.loginButton.center.y -= 30.0
+                        self.loginButton.alpha = 1.0
+                       },
+                       completion: nil
+        )
+        
+        // 구름 이미지들이 계속해서 애니메이트 하도록 메소드 호출
+        animateCloud(cloud1)
+        animateCloud(cloud2)
+        animateCloud(cloud3)
+        animateCloud(cloud4)
+    }
+    
+    func showMessage(index: Int) {
+        label.text = messages[index]
+        
+        UIView.transition(with: status, duration: 0.33,
+                          options: [.curveEaseOut, .transitionFlipFromBottom],
+                          animations: {
+                            self.status.isHidden = false
+                          },
+                          completion: {_ in
+                            //transition completion
+                            delay(seconds: 2.0) {
+                                if index < self.messages.count-1 {
+                                    self.removeMessage(index: index)
+                                } else {
+                                    //reset form
+                                    self.resetForm()
+                                }
+                            }
+                          }
+        )
+    }
+    
+    func removeMessage(index: Int) {
+        
+        UIView.animate(withDuration: 0.33, delay: 0.0,
+                       animations: {
+                        self.status.center.x += self.view.frame.size.width
+                       },
+                       completion: {_ in
+                        self.status.isHidden = true
+                        self.status.center = self.statusPosition
+                        
+                        self.showMessage(index: index+1)
+                       }
+        )
+    }
+    
+    func resetForm() {
+        UIView.transition(with: status, duration: 0.2, options: .transitionFlipFromTop,
+                          animations: {
+                            self.status.isHidden = true
+                            self.status.center = self.statusPosition
+                          },
+                          completion: nil
+        )
+        
+        UIView.animate(withDuration: 0.2, delay: 0.0,
+                       animations: {
+                        self.spinner.center = CGPoint(x: -20.0, y: 16.0)
+                        self.spinner.alpha = 0.0
+                        self.loginButton.backgroundColor = UIColor(red: 0.63, green: 0.84, blue: 0.35, alpha: 1.0)
+                        self.loginButton.bounds.size.width -= 80.0
+                        self.loginButton.center.y -= 60.0
+                       },
+                       completion: nil
+        )
+    }
+    
+    // MARK: further methods
+    
+    @IBAction func login() {
+        view.endEditing(true)
+        
+        UIView.animate(withDuration: 1.5, delay: 0.0, usingSpringWithDamping: 0.2,
+                       initialSpringVelocity: 0.0,
+                       animations: {
+                        self.loginButton.bounds.size.width += 80.0
+                       },
+                       completion: {_ in
+                        self.showMessage(index: 0)
+                       }
+        )
+        
+        UIView.animate(withDuration: 0.33, delay: 0.0, usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.0,
+                       animations: {
+                        self.loginButton.center.y += 60.0
+                        self.loginButton.backgroundColor = UIColor(red: 0.85, green: 0.83, blue: 0.45, alpha: 1.0)
+                        self.spinner.center = CGPoint(x: 40.0, y: self.loginButton.frame.size.height/2)
+                        self.spinner.alpha = 1.0
+                       },
+                       completion: nil
+        )
+    }
+    
+    func animateCloud(_ cloud: UIImageView) {
+        let cloudSpeed = 60.0 / view.frame.size.width
+        let duration = (view.frame.size.width - cloud.frame.origin.x) * cloudSpeed
+        UIView.animate(withDuration: TimeInterval(duration), delay: 0.0, options: .curveLinear,
+                       animations: {
+                        cloud.frame.origin.x = self.view.frame.size.width
+                       },
+                       completion: {_ in
+                        cloud.frame.origin.x = -cloud.frame.size.width
+                        self.animateCloud(cloud)
+                       }
+        )
+    }
+    
+    // MARK: UITextFieldDelegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let nextField = (textField === userNameField) ? passwordField : userNameField
+        nextField?.becomeFirstResponder()
+        return true
+    }
+    
 }
