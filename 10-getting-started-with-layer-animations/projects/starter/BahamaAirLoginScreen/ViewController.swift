@@ -56,24 +56,30 @@ class ViewController: UIViewController {
     super.viewDidLoad()
 
     //set up the UI
+    
+    // 로그인 버튼 유저 인터페이스 설정
     loginButton.layer.cornerRadius = 8.0
     loginButton.layer.masksToBounds = true
 
+    // 스피너 유저 인터페이스 설정: 로그인 버튼의 하위 뷰가 된다
     spinner.frame = CGRect(x: -20.0, y: 6.0, width: 20.0, height: 20.0)
     spinner.startAnimating()
     spinner.alpha = 0.0
     loginButton.addSubview(spinner)
 
+    // 배너 유저 인터페이스 설정: 로그인 버튼과 동일한 중앙 위치
     status.isHidden = true
     status.center = loginButton.center
     view.addSubview(status)
 
+    // 배너에 사용될 레이블 유저 인터페이스 설정
     label.frame = CGRect(x: 0.0, y: 0.0, width: status.frame.size.width, height: status.frame.size.height)
     label.font = UIFont(name: "HelveticaNeue", size: 18.0)
     label.textColor = UIColor(red: 0.89, green: 0.38, blue: 0.0, alpha: 1.0)
     label.textAlignment = .center
     status.addSubview(label)
 
+    // 최초의 배너 중앙 위치를 statusPosition에 할당한다
     statusPosition = status.center
   }
 
