@@ -84,15 +84,18 @@ class ViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
+    // 타이틀 레이블과 텍스트 필드 기본 위치 설정: 뷰의 넓이 만큼 위치 조정
     heading.center.x  -= view.bounds.width
     username.center.x -= view.bounds.width
     password.center.x -= view.bounds.width
 
+    // 구름 이미지를 처음에는 보이지 않도록 alpha 설정
     cloud1.alpha = 0.0
     cloud2.alpha = 0.0
     cloud3.alpha = 0.0
     cloud4.alpha = 0.0
 
+    // 로그인 버튼의 y축 위치를 아래로 설정하고 보이지 않도록 alpha 설정 
     loginButton.center.y += 30.0
     loginButton.alpha = 0.0
   }
