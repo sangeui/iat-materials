@@ -45,8 +45,8 @@ class ViewController: UIViewController {
     // MARK: further UI
     
     let spinner = UIActivityIndicatorView(style: .whiteLarge)
-    let status = UIImageView(image: UIImage(named: "banner"))
-    let label = UILabel()
+    let bannerView = UIImageView(image: UIImage(named: "banner"))
+    let bannerLabel = UILabel()
     let messages = ["Connecting ...", "Authorizing ...", "Sending credentials ...", "Failed"]
     
     var statusPosition = CGPoint.zero
@@ -67,19 +67,19 @@ class ViewController: UIViewController {
         loginButton.addSubview(spinner)
         
         // 배너 유저 인터페이스 설정: 로그인 버튼과 동일한 중앙 위치
-        status.isHidden = true
-        status.center = loginButton.center
-        view.addSubview(status)
+        bannerView.isHidden = true
+        bannerView.center = loginButton.center
+        view.addSubview(bannerView)
         
         // 배너에 사용될 레이블 유저 인터페이스 설정
-        label.frame = CGRect(x: 0.0, y: 0.0, width: status.frame.size.width, height: status.frame.size.height)
-        label.font = UIFont(name: "HelveticaNeue", size: 18.0)
-        label.textColor = UIColor(red: 0.89, green: 0.38, blue: 0.0, alpha: 1.0)
-        label.textAlignment = .center
-        status.addSubview(label)
+        bannerLabel.frame = CGRect(x: 0.0, y: 0.0, width: bannerView.frame.size.width, height: bannerView.frame.size.height)
+        bannerLabel.font = UIFont(name: "HelveticaNeue", size: 18.0)
+        bannerLabel.textColor = UIColor(red: 0.89, green: 0.38, blue: 0.0, alpha: 1.0)
+        bannerLabel.textAlignment = .center
+        bannerView.addSubview(bannerLabel)
         
         // 최초의 배너 중앙 위치를 statusPosition에 할당한다
-        statusPosition = status.center
+        statusPosition = bannerView.center
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -174,12 +174,12 @@ class ViewController: UIViewController {
     }
     
     func showMessage(index: Int) {
-        label.text = messages[index]
+        bannerLabel.text = messages[index]
         
-        UIView.transition(with: status, duration: 0.33,
+        UIView.transition(with: bannerView, duration: 0.33,
                           options: [.curveEaseOut, .transitionFlipFromBottom],
                           animations: {
-                            self.status.isHidden = false
+                            self.bannerView.isHidden = false
                           },
                           completion: {_ in
                             //transition completion
@@ -199,11 +199,11 @@ class ViewController: UIViewController {
         
         UIView.animate(withDuration: 0.33, delay: 0.0,
                        animations: {
-                        self.status.center.x += self.view.frame.size.width
+                        self.bannerView.center.x += self.view.frame.size.width
                        },
                        completion: {_ in
-                        self.status.isHidden = true
-                        self.status.center = self.statusPosition
+                        self.bannerView.isHidden = true
+                        self.bannerView.center = self.statusPosition
                         
                         self.showMessage(index: index+1)
                        }
@@ -211,10 +211,10 @@ class ViewController: UIViewController {
     }
     
     func resetForm() {
-        UIView.transition(with: status, duration: 0.2, options: .transitionFlipFromTop,
+        UIView.transition(with: bannerView, duration: 0.2, options: .transitionFlipFromTop,
                           animations: {
-                            self.status.isHidden = true
-                            self.status.center = self.statusPosition
+                            self.bannerView.isHidden = true
+                            self.bannerView.center = self.statusPosition
                           },
                           completion: nil
         )
