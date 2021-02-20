@@ -95,7 +95,7 @@ class ViewController: UIViewController {
     cloud3.alpha = 0.0
     cloud4.alpha = 0.0
 
-    // 로그인 버튼의 y축 위치를 아래로 설정하고 보이지 않도록 alpha 설정 
+    // 로그인 버튼의 y축 위치를 아래로 설정하고 보이지 않도록 alpha 설정
     loginButton.center.y += 30.0
     loginButton.alpha = 0.0
   }
@@ -103,10 +103,12 @@ class ViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
+    // 타이틀 레이블의 위치를 다시 제자리로 애니메이트
     UIView.animate(withDuration: 0.5) {
       self.heading.center.x += self.view.bounds.width
     }
 
+    // 유저 네임 텍스트 필드를 약간의 딜레이 후 제자리로 애니메이트
     UIView.animate(withDuration: 0.5, delay: 0.3, usingSpringWithDamping: 0.6,
       initialSpringVelocity: 0.0,
       animations: {
@@ -115,6 +117,7 @@ class ViewController: UIViewController {
       completion: nil
     )
 
+    // 패스워드 텍스트 필드를 약간의 딜레이 후 제자리로 애니메이트
     UIView.animate(withDuration: 0.5, delay: 0.4, usingSpringWithDamping: 0.6,
       initialSpringVelocity: 0.0,
       animations: {
@@ -123,6 +126,7 @@ class ViewController: UIViewController {
       completion: nil
     )
 
+    // 모든 구름 이미지를 각각의 딜레이 이후 화면에 보이도록 애니메이트
     UIView.animate(withDuration: 0.5, delay: 0.5,
       animations: {
         self.cloud1.alpha = 1.0
@@ -151,6 +155,7 @@ class ViewController: UIViewController {
       completion: nil
     )
 
+    // 로그인 버튼을 딜레이 후 다시 제자리로 돌려 놓으면서 화면에 보이도록 애니메이트
     UIView.animate(withDuration: 0.5, delay: 0.5, usingSpringWithDamping: 0.5,
       initialSpringVelocity: 0.0,
       animations: {
@@ -160,6 +165,7 @@ class ViewController: UIViewController {
       completion: nil
     )
 
+    // 구름 이미지들이 계속해서 애니메이트 하도록 메소드 호출
     animateCloud(cloud1)
     animateCloud(cloud2)
     animateCloud(cloud3)
