@@ -54,8 +54,6 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    //set up the UI
     
     // 로그인 버튼 유저 인터페이스 설정
     loginButton.layer.cornerRadius = 8.0
