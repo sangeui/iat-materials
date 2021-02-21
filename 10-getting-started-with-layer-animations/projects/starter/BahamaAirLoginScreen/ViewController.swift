@@ -85,6 +85,14 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // 변경된 타이틀 레이블 애니메이션
+        let flyRight = CABasicAnimation(keyPath: "position.x")
+        flyRight.fromValue = -view.bounds.size.width / 2
+        flyRight.toValue = view.bounds.size.width / 2
+        flyRight.duration = 0.5
+        
+        titleLabel.layer.add(flyRight, forKey: nil)
+        
         // 텍스트 필드 기본 위치 설정: 뷰의 넓이 만큼 위치 조정
         userNameField.center.x -= view.bounds.width
         passwordField.center.x -= view.bounds.width
