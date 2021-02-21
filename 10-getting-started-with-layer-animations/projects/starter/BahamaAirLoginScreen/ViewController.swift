@@ -174,20 +174,25 @@ class ViewController: UIViewController {
     }
     
     func showMessage(index: Int) {
+        
+        // 배너 레이블의 텍스트를 messages의 index번째 메시지로 설정
         bannerLabel.text = messages[index]
         
+        // 배너 뷰를 숨기고 일정 딜레이 후
+        // messages의 모든 메시지를 사용했는지 여부에 따라 다른 메소드를 호출
         UIView.transition(with: bannerView, duration: 0.33,
                           options: [.curveEaseOut, .transitionFlipFromBottom],
                           animations: {
+                            // 배너 뷰가 화면에 표현되도록 애니메이트
                             self.bannerView.isHidden = false
                           },
                           completion: {_ in
-                            //transition completion
                             delay(seconds: 2.0) {
                                 if index < self.messages.count-1 {
+                                    // 소비할 메시지가 존재한다면 해당 블록 수행
                                     self.removeMessage(index: index)
                                 } else {
-                                    //reset form
+                                    // 모든 메시지를 소비했다면 해당 블록 수행
                                     self.resetForm()
                                 }
                             }
@@ -195,24 +200,31 @@ class ViewController: UIViewController {
         )
     }
     
+    /// 현재 표현되고 있는 배너 뷰를 사라지도록 애니메이트하고, 다시 showMessage를 호출한다
+    /// - Parameter index: 메시지 배열의 인덱스를 가리킨다
     func removeMessage(index: Int) {
         
         UIView.animate(withDuration: 0.33, delay: 0.0,
                        animations: {
+                        // 배너 뷰를 화면 바깥으로 이동
                         self.bannerView.center.x += self.view.frame.size.width
                        },
                        completion: {_ in
+                        // 화면 바깥으로 이동된 배너 뷰를 숨김
                         self.bannerView.isHidden = true
+                        // 숨겨진 배너 뷰의 위치를 최초의 위치로 설정
                         self.bannerView.center = self.statusPosition
-                        
+                        // 다시 showMessage(index:)를 호출한다
                         self.showMessage(index: index+1)
                        }
         )
     }
     
+    /// 배너 뷰의 위치를 초기 위치로 설정하고 숨김
     func resetForm() {
         UIView.transition(with: bannerView, duration: 0.2, options: .transitionFlipFromTop,
                           animations: {
+                            // 배너 뷰를 초기 상태로 설정
                             self.bannerView.isHidden = true
                             self.bannerView.center = self.statusPosition
                           },
@@ -221,10 +233,15 @@ class ViewController: UIViewController {
         
         UIView.animate(withDuration: 0.2, delay: 0.0,
                        animations: {
+                        // 스피너의 중앙 위치를 변경
                         self.spinner.center = CGPoint(x: -20.0, y: 16.0)
+                        // 스피너의 알파 값을 0로 설정해, 숨겨지도록 함
                         self.spinner.alpha = 0.0
+                        // 로그인 버튼의 배경 색상을 변경
                         self.loginButton.backgroundColor = UIColor(red: 0.63, green: 0.84, blue: 0.35, alpha: 1.0)
+                        // 로그인 버튼의 bounds 사이즈를 줄임
                         self.loginButton.bounds.size.width -= 80.0
+                        // 로그인 버튼의 y축 위치를 올림
                         self.loginButton.center.y -= 60.0
                        },
                        completion: nil
@@ -236,6 +253,7 @@ class ViewController: UIViewController {
     @IBAction func login() {
         view.endEditing(true)
         
+        // 로그인 버튼의 넓이를 늘리고 (스피너가 뷰 내부에 표현되도록), 배너 표현을 시작함
         UIView.animate(withDuration: 1.5, delay: 0.0, usingSpringWithDamping: 0.2,
                        initialSpringVelocity: 0.0,
                        animations: {
@@ -249,9 +267,13 @@ class ViewController: UIViewController {
         UIView.animate(withDuration: 0.33, delay: 0.0, usingSpringWithDamping: 0.7,
                        initialSpringVelocity: 0.0,
                        animations: {
+                        // 배너 뷰가 표현될 수 있게 로그인 버튼의 위치를 내림
                         self.loginButton.center.y += 60.0
+                        // 로그인 버튼의 배경 색상을 변경
                         self.loginButton.backgroundColor = UIColor(red: 0.85, green: 0.83, blue: 0.45, alpha: 1.0)
+                        // 스피너의 중앙 위치 변경
                         self.spinner.center = CGPoint(x: 40.0, y: self.loginButton.frame.size.height/2)
+                        // 스피너가 화면에 표현되도록 함
                         self.spinner.alpha = 1.0
                        },
                        completion: nil
@@ -263,10 +285,13 @@ class ViewController: UIViewController {
         let duration = (view.frame.size.width - cloud.frame.origin.x) * cloudSpeed
         UIView.animate(withDuration: TimeInterval(duration), delay: 0.0, options: .curveLinear,
                        animations: {
+                        // 구름 이미지가 화면 바깥까지 이동하도록 애니메이트
                         cloud.frame.origin.x = self.view.frame.size.width
                        },
                        completion: {_ in
+                        // 구름 이미지가 화면을 벗어나면, 다시 시작할 수 있도록 화면의 처음으로 이동
                         cloud.frame.origin.x = -cloud.frame.size.width
+                        // 구름 애니메이션 반복
                         self.animateCloud(cloud)
                        }
         )
