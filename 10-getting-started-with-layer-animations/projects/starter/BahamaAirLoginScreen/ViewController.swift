@@ -85,8 +85,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // 타이틀 레이블과 텍스트 필드 기본 위치 설정: 뷰의 넓이 만큼 위치 조정
-        titleLabel.center.x  -= view.bounds.width
+        // 텍스트 필드 기본 위치 설정: 뷰의 넓이 만큼 위치 조정
         userNameField.center.x -= view.bounds.width
         passwordField.center.x -= view.bounds.width
         
@@ -103,11 +102,6 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // 타이틀 레이블의 위치를 다시 제자리로 애니메이트
-        UIView.animate(withDuration: 0.5) {
-            self.titleLabel.center.x += self.view.bounds.width
-        }
         
         // 유저 네임 텍스트 필드를 약간의 딜레이 후 제자리로 애니메이트
         UIView.animate(withDuration: 0.5, delay: 0.3, usingSpringWithDamping: 0.6,
