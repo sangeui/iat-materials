@@ -50,6 +50,16 @@ class ViewController: UIViewController {
     
     var statusPosition = CGPoint.zero
     
+    // 레이어를 오른쪽으로 이동시키는 애니메이션
+    var moveRightAnimation: CABasicAnimation {
+        let animation = CABasicAnimation(keyPath: "position.x")
+        animation.fromValue = -view.bounds.size.width / 2
+        animation.toValue = view.bounds.size.width / 2
+        animation.duration = 0.5
+        
+        return animation
+    }
+    
     // MARK: view controller methods
     
     override func viewDidLoad() {
