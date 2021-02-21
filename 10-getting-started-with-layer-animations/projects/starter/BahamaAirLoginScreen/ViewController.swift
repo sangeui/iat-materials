@@ -31,7 +31,6 @@ class ViewController: UIViewController {
     
     // MARK: IB outlets
     
-    
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var userNameField: UITextField!
     @IBOutlet var passwordField: UITextField!
